@@ -1,16 +1,9 @@
-tablero = [["X", "X", "X"], 
-           ["O", "-", "-"], 
-           ["X", "-", "X"]]
+tablero = [["-", "-", "-"], 
+           ["-", "-", "-"], 
+           ["-", "-", "-"]]
 in_game = True
 player = "X"
 tie = False
-
-def reset_tablero():
-    tablero = [["-", "-", "-"], 
-               ["-", "-", "-"], 
-               ["-", "-", "-"]]
-    in_game = True
-    return tablero, in_game
 
 def mostrar_tablero():
     print("  1|2|3")
@@ -31,50 +24,33 @@ def change_turno(player):
         return "X"
 
 def check_winner(player, tablero):
-    # COMPRUEBA LAS LINEAS DE LA TABLA #
     for i, row in enumerate(tablero):
-        line = 0
+        winner_cond = {
+            "player_row": 0,
+            "player_col": 0,
+            "player_diaL": 0,
+            "player_diaR": 0
+        }
+        cont = 2
+        
         for j, value in enumerate(row):
             if tablero[i][j] == player:
-                line += 1
-            else:
-                break
-            if line == 3:
-                return True
-    
-    # COMPRUEBA LAS COLUMNAS DE LA TABLA #
-    for i, row in enumerate(tablero):
-        line = 0
-        for j, value in enumerate(row):
+                winner_cond["player_row"] += 1
             if tablero[j][i] == player:
-                line += 1
-            else:
-                break
-            if line == 3:
-                return True
-    
-    # COMPRUEBA LAS DIAGONALES DE LA TABLA #
-    for i, row in enumerate(tablero):
-        line = 0
-        for j, value in enumerate(row):
+                winner_cond["player_col"] += 1
             if tablero[j][j] == player:
-                line += 1
-            else:
-                break
-            if line == 3:
-                return True
-    
-    for i, row in enumerate(tablero):
-        line = 0
-        cont = 2
-        for j, value in enumerate(row):
+                winner_cond["player_diaL"] += 1
             if tablero[j][cont] == player:
-                line += 1
-            else:
-                break
-            if line == 3:
-                return True
+                winner_cond["player_diaR"] += 1
+
+            check_in = winner_cond.values()
+            for cond in check_in:
+                if cond == 3:
+                    return True
+            
             cont -= 1
+        
+        print(winner_cond)
 
 def check_empate(tablero):
     for row in tablero:
@@ -82,11 +58,10 @@ def check_empate(tablero):
             return False
     return True
 
-tablero, in_game = reset_tablero()
 while in_game:
     mostrar_tablero()
-    coordX = int(input(f"Coordenada X para colocar la {player}: "))-1
-    coordY = int(input(f"Coordenada Y para colocar la {player}: "))-1
+    coordX = int(input(f"Coordenada X para colocar la {player}: ")) - 1
+    coordY = int(input(f"Coordenada Y para colocar la {player}: ")) - 1
     coords = [coordX, coordY]
     print("")
 
