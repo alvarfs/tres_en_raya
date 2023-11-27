@@ -31,21 +31,21 @@ def comprobar_ganador(jugador, tablero):
     diagonal_secundaria = 0
 
     for i in range(n):
-        fila_ganadora = 0
-        columna_ganadora = 0
+        fila = 0
+        columna = 0
 
         for j in range(n):
             if tablero[i][j] == jugador:
-                fila_ganadora += 1
+                fila += 1
             if tablero[j][i] == jugador:
-                columna_ganadora += 1
+                columna += 1
 
             if i == j and tablero[i][j] == jugador:
                 diagonal_principal += 1
             if i + j == n - 1 and tablero[i][j] == jugador:
                 diagonal_secundaria += 1
 
-            if fila_ganadora == n or columna_ganadora == n:
+            if fila == n or columna == n:
                 return True
 
     if diagonal_principal == n or diagonal_secundaria == n:
