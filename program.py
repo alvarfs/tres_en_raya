@@ -1,11 +1,13 @@
+import os
 tablero = [["-", "-", "-"], 
            ["-", "-", "-"], 
            ["-", "-", "-"]]
-in_game = True
-player = "X"
-tie = False
+jugador = "X"
+en_partida = True
+empate = False
 
 def mostrar_tablero():
+    os.system('cls')
     print("  1|2|3")
     cont = 1
     for row in tablero:
@@ -14,34 +16,34 @@ def mostrar_tablero():
         cont += 1
     print("")
 
-def update_tablero(player, coords):
-    tablero[coords[0]] [coords[1]] = player
+def actualizar_tablero(jugador, coords):
+    tablero[coords[0]] [coords[1]] = jugador
 
-def change_turno(player):
-    if player == "X":
+def cambiar_turno(jugador):
+    if jugador == "X":
         return "O"
     else:
         return "X"
 
-def check_winner(player, tablero):
+def comprobar_ganador(jugador, tablero):
     for i, row in enumerate(tablero):
         winner_cond = {
-            "player_row": 0,
-            "player_col": 0,
-            "player_diaL": 0,
-            "player_diaR": 0
+            "jugador_row": 0,
+            "jugador_col": 0,
+            "jugador_diaL": 0,
+            "jugador_diaR": 0
         }
         cont = 2
         
         for j, value in enumerate(row):
-            if tablero[i][j] == player:
-                winner_cond["player_row"] += 1
-            if tablero[j][i] == player:
-                winner_cond["player_col"] += 1
-            if tablero[j][j] == player:
-                winner_cond["player_diaL"] += 1
-            if tablero[j][cont] == player:
-                winner_cond["player_diaR"] += 1
+            if tablero[i][j] == jugador:
+                winner_cond["jugador_row"] += 1
+            if tablero[j][i] == jugador:
+                winner_cond["jugador_col"] += 1
+            if tablero[j][j] == jugador:
+                winner_cond["jugador_diaL"] += 1
+            if tablero[j][cont] == jugador:
+                winner_cond["jugador_diaR"] += 1
 
             check_in = winner_cond.values()
             for cond in check_in:
@@ -49,33 +51,31 @@ def check_winner(player, tablero):
                     return True
             
             cont -= 1
-        
-        print(winner_cond)
 
-def check_empate(tablero):
+def comprobar_empate(tablero):
     for row in tablero:
         if "-" in row:
             return False
     return True
 
-while in_game:
+while en_partida:
     mostrar_tablero()
-    coordX = int(input(f"Coordenada X para colocar la {player}: ")) - 1
-    coordY = int(input(f"Coordenada Y para colocar la {player}: ")) - 1
+    coordX = int(input(f"Coordenada X para colocar la {jugador}: ")) - 1
+    coordY = int(input(f"Coordenada Y para colocar la {jugador}: ")) - 1
     coords = [coordX, coordY]
     print("")
 
     if tablero[coords[0]] [coords[1]] == "-":
-        update_tablero(player, coords)
-        game_over = check_winner(player, tablero)
-        if game_over:
-            in_game = False
+        actualizar_tablero(jugador, coords)
+        fin_partida = comprobar_ganador(jugador, tablero)
+        if fin_partida:
+            en_partida = False
         else:
-            tie = check_empate(tablero)
-            if tie:
-                in_game = False
-                tie = True
-            player = change_turno(player)
+            empate = comprobar_empate(tablero)
+            if empate:
+                en_partida = False
+                empate = True
+            jugador = cambiar_turno(jugador)
         
     else:
         print("Coordenadas ocupadas!")
@@ -83,8 +83,8 @@ while in_game:
 
 
 mostrar_tablero()
-if tie:
+if empate:
     print(f"Empate!!")
 else:
-    print(f"Gana {player}!!!")
+    print(f"Gana {jugador}!!!")
 
