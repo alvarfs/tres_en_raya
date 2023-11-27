@@ -7,12 +7,12 @@ en_partida = True
 empate = False
 
 def mostrar_tablero():
-    os.system('cls')
+    os.system("cls")
     print("  1|2|3")
     cont = 1
     for fila in tablero:
         print(cont, end = "|")
-        print('|'.join(fila))
+        print("|".join(fila))
         cont += 1
     print("")
 
@@ -83,6 +83,6 @@ while en_partida:
 
 mostrar_tablero()
 if empate:
-    print(f"Empate!!")
+    print(f"Empate !!!")
 else:
-    print(f"Gana {jugador}!!!")
+    print(f"Gana {jugador} !!!")
