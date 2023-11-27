@@ -10,9 +10,9 @@ def mostrar_tablero():
     os.system('cls')
     print("  1|2|3")
     cont = 1
-    for row in tablero:
+    for fila in tablero:
         print(cont, end = "|")
-        print('|'.join(row))
+        print('|'.join(fila))
         cont += 1
     print("")
 
@@ -26,35 +26,36 @@ def cambiar_turno(jugador):
         return "X"
 
 def comprobar_ganador(jugador, tablero):
-    for i, row in enumerate(tablero):
-        winner_cond = {
-            "jugador_row": 0,
-            "jugador_col": 0,
-            "jugador_diaL": 0,
-            "jugador_diaR": 0
-        }
-        cont = 2
-        
-        for j, value in enumerate(row):
-            if tablero[i][j] == jugador:
-                winner_cond["jugador_row"] += 1
-            if tablero[j][i] == jugador:
-                winner_cond["jugador_col"] += 1
-            if tablero[j][j] == jugador:
-                winner_cond["jugador_diaL"] += 1
-            if tablero[j][cont] == jugador:
-                winner_cond["jugador_diaR"] += 1
+    n = len(tablero)
+    diagonal_principal = 0
+    diagonal_secundaria = 0
 
-            check_in = winner_cond.values()
-            for cond in check_in:
-                if cond == 3:
-                    return True
-            
-            cont -= 1
+    for i in range(n):
+        fila_ganadora = 0
+        columna_ganadora = 0
+
+        for j in range(n):
+            if tablero[i][j] == jugador:
+                fila_ganadora += 1
+            if tablero[j][i] == jugador:
+                columna_ganadora += 1
+
+            if i == j and tablero[i][j] == jugador:
+                diagonal_principal += 1
+            if i + j == n - 1 and tablero[i][j] == jugador:
+                diagonal_secundaria += 1
+
+            if fila_ganadora == n or columna_ganadora == n:
+                return True
+
+    if diagonal_principal == n or diagonal_secundaria == n:
+        return True
+
+    return False
 
 def comprobar_empate(tablero):
-    for row in tablero:
-        if "-" in row:
+    for fila in tablero:
+        if "-" in fila:
             return False
     return True
 
@@ -78,13 +79,10 @@ while en_partida:
             jugador = cambiar_turno(jugador)
         
     else:
-        print("Coordenadas ocupadas!")
-        print("Prueba con otras.")
-
+        input("Casilla ocupada! ")
 
 mostrar_tablero()
 if empate:
     print(f"Empate!!")
 else:
     print(f"Gana {jugador}!!!")
-
